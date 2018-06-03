@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.food.util.ValidationUtil.checkNotFound;
@@ -44,6 +45,11 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<Dish> getAll(int restaurantId) {
         return repository.getAll(restaurantId);
+    }
+
+    @Override
+    public List<Dish> getForFixedDate(int restaurantId, LocalDate date) {
+        return repository.getForFixedDate(restaurantId,date);
     }
 
     @Override

@@ -26,11 +26,11 @@ public interface VoteCrudRepository extends JpaRepository<Vote,Integer> {
     @Modifying
     Vote save(Vote vote);
 
-    @Query("SELECT v FROM Vote v WHERE v.restaurant.id=:restaurantId AND v.date BETWEEN :startDate AND :endDate ORDER BY v.date, v.time")
+    @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.restaurant WHERE v.restaurant.id=:restaurantId AND v.date BETWEEN :startDate AND :endDate ORDER BY v.date, v.time")
     List<Vote> getBetweenForRestaurant(@Param("restaurantId") int  restaurantId, @Param("startDate")LocalDate startDate,
                       @Param("endDate")LocalDate endDate);
 
-    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.date BETWEEN :startDate AND :endDate ORDER BY v.date, v.time")
+    @Query("SELECT v FROM Vote v LEFT JOIN FETCH v.user WHERE v.user.id=:userId AND v.date BETWEEN :startDate AND :endDate ORDER BY v.date, v.time")
     List<Vote> getBetweenForUser(@Param("userId") int  userId, @Param("startDate")LocalDate startDate,
                                        @Param("endDate")LocalDate endDate);
 }

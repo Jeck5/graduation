@@ -18,7 +18,7 @@ public class User extends AbstractNamedEntity {
 
     public static final String GRAPH_WITH_VOTE_HISTORY_AND_ROLES = "User.withVoteHistory";
 
-    public static final String GET_BY_ID = "User.getById";
+    public static final String GET_BY_ID = "User.getById"; //TODO delete all unnecessary
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String VOTES = "User.getLastVote";
 

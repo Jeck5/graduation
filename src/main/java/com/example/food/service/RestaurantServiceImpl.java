@@ -1,27 +1,32 @@
 package com.example.food.service;
 
 import com.example.food.model.Restaurant;
+import com.example.food.repository.DishCrudRepository;
 import com.example.food.repository.RestaurantCrudRepository;
-import com.example.food.repository.UserCrudRepository;
 import com.example.food.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.food.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class RestaurantServiceImpl implements RestaurantService {
-
 
     private static final Sort SORT_NAME = new Sort(Sort.Direction.ASC, "name");
 
     private final RestaurantCrudRepository repository;
+    private final DishCrudRepository dishRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantCrudRepository repository) {
+    public RestaurantServiceImpl(RestaurantCrudRepository repository, DishCrudRepository dishRepository) {
         this.repository = repository;
+        this.dishRepository = dishRepository;
     }
 
     @Override
@@ -49,5 +54,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<Restaurant> getAll() {
         return repository.findAll(SORT_NAME);
+    }
+
+    @Override
+    public List<Restaurant> getAllwithMenuOnDate(LocalDate date) {
+        return repository.findAllWithMenuOnDate(date);
     }
 }

@@ -6,17 +6,20 @@ import com.example.food.repository.UserCrudRepository;
 import com.example.food.repository.VoteCrudRepository;
 import com.example.food.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.food.util.ValidationUtil.checkNotFoundWithId;
 
+@Service
 public class VoteServiceImpl implements VoteService {
-    private final VoteCrudRepository repository;
+    public final VoteCrudRepository repository;  //TODO return private
 
     private final RestaurantCrudRepository restaurantRepository;
 
@@ -46,7 +49,11 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public List<Vote> getBetweenForRestaurant(int restaurantId, LocalDate startDate, LocalDate endDate) {
-        return repository.getBetweenForRestaurant(restaurantId, startDate, endDate);
+        //return repository.getBetweenForRestaurant(restaurantId, startDate, endDate);
+        Vote v1 = repository.findOne(1020); //TODO return normal
+        Vote v2 = repository.findOne(1021);
+        return Arrays.asList(v1,v2);
+
     }
 
     @Override
@@ -77,6 +84,8 @@ public class VoteServiceImpl implements VoteService {
         }
         vote.setRestaurant(restaurantRepository.getOne(restaurantId));
         vote.setUser(userRepository.getOne(userId));
+        vote.setDate(LocalDate.now());
+        vote.setTime(LocalTime.now());
         return repository.save(vote);
     }
 }

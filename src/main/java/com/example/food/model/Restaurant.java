@@ -1,6 +1,7 @@
 package com.example.food.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,9 +11,8 @@ import java.util.List;
 @Table(name = "restaurants")
 public class Restaurant extends AbstractNamedEntity {
 
-    private String info;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy(value = "date DESC")
+    @ToString.Exclude
     private List<Dish> menuHistory;
 }
