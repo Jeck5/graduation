@@ -21,14 +21,14 @@ import static com.example.food.util.ValidationUtil.checkNew;
 @RestController
 @RequestMapping(DishRestController.REST_URL)
 public class DishRestController {
-    static final String REST_URL = RestaurantRestController.REST_URL + "/{restaurant_id}/dishes/";
+    static final String REST_URL = RestaurantRestController.REST_URL + "/{restaurant_id}/dishes";
 
     @Autowired
     private DishService service;
 
-    @GetMapping("/{date}")
-    public List<Dish> getForFixedDate(@PathVariable("restaurant_id") int restaurantId, @PathVariable("date") LocalDate date) {
-        return service.getForFixedDate(restaurantId,date);
+    @GetMapping("/{id}")
+    public Dish get(@PathVariable("restaurant_id") int restaurantId, @PathVariable("id") int id) {
+        return service.get(id, restaurantId); //TODO review param orders
     }
 
     @GetMapping()
@@ -37,12 +37,12 @@ public class DishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@PathVariable("restaurant_id") int restaurantId, @RequestBody @Valid Dish dish) {
+    public ResponseEntity<Dish> createWithLocation(@PathVariable("restaurant_id") int restaurantId, @RequestBody Dish dish) {
         checkNew(dish);
         Dish created = service.create(dish,restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
+                .buildAndExpand(restaurantId, created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
@@ -53,7 +53,7 @@ public class DishRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody @Valid Dish dish, @PathVariable("restaurant_id") int restaurantId,@PathVariable("id") int id) {
+    public void update(@RequestBody Dish dish, @PathVariable("restaurant_id") int restaurantId,@PathVariable("id") int id) {
         assureIdConsistent(dish, id);
         service.update(dish, restaurantId);
     }

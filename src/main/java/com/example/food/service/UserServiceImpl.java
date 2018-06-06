@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.example.food.AuthorizedUser;
 import com.example.food.repository.UserCrudRepository;
 import com.example.food.model.User;
 import org.springframework.transaction.annotation.Transactional;

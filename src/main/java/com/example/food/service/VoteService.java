@@ -17,7 +17,5 @@ public interface VoteService {
 
     List<Vote> getBetweenForUser(int userId, LocalDate startDate, LocalDate endDate);
 
-    Vote update(Vote vote, int restaurantId, int userId) throws NotFoundException;
-
-    Vote create(Vote vote, int restaurantId, int userId);
+    Vote createOrUpdate(int restaurantId, int userId) throws NotFoundException;
 }

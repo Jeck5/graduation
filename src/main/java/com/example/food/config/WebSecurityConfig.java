@@ -12,13 +12,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {//TODO uncomment
-//        http.authorizeRequests()
-//                .antMatchers("/rest/profile/**")
-//                .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-//                .antMatchers("/rest/admin/**")
-//                .access("hasRole('ROLE_ADMIN')")
-//                .anyRequest().authenticated();
-//        http.httpBasic().and().csrf().disable();
+        //http.csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/rest/profile/**")
+                .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/rest/admin/**")
+                .access("hasRole('ROLE_ADMIN')")
+                .anyRequest().authenticated();
+        http.httpBasic().and().csrf().disable();
     }
 
 }

@@ -1,15 +1,19 @@
 package com.example.food;
 
-import com.example.food.model.AbstractBaseEntity;
+import com.example.food.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthorizedUser {
-    private static int id = AbstractBaseEntity.START_SEQ;
 
-    public static int id() {
-        return id;
-    }
+    @Autowired
+    private UserService service;
 
-    public static void setId(int id) {
-        AuthorizedUser.id = id;
+    public int id() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return service.getByEmail(auth.getName()).getId();
     }
 }

@@ -49,11 +49,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Override
     public List<Vote> getBetweenForRestaurant(int restaurantId, LocalDate startDate, LocalDate endDate) {
-        //return repository.getBetweenForRestaurant(restaurantId, startDate, endDate);
-        Vote v1 = repository.findOne(1020); //TODO return normal
-        Vote v2 = repository.findOne(1021);
-        return Arrays.asList(v1,v2);
-
+        return repository.getBetweenForRestaurant(restaurantId, startDate, endDate);
     }
 
     @Override
@@ -62,19 +58,18 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Vote update(Vote vote, int restaurantId, int userId) throws NotFoundException {
-        Vote voteExcisting = get(vote.getId(), restaurantId, userId);
-        if ((voteExcisting == null) || ((voteExcisting.getDate().compareTo(LocalDate.now()) == 0) && (voteExcisting.getTime().isBefore(LocalTime.of(11, 0))))) {
-            return checkNotFoundWithId(save(vote, restaurantId, userId), vote.getId());
+    public Vote createOrUpdate(int restaurantId, int userId) throws NotFoundException {
+        List<Vote> votesExisting = getBetweenForUser(userId, LocalDate.now(), LocalDate.now());
+        if (votesExisting.size() == 0) {
+            return save(new Vote(), restaurantId, userId);
         } else {
-            return voteExcisting;
+            Vote currentVote = votesExisting.get(0);
+            if (currentVote.getTime().isBefore(LocalTime.of(22, 0))) {  //TODO magic constant
+                return checkNotFoundWithId(save(currentVote, restaurantId, userId), currentVote.getId());
+            } else {
+                return currentVote;
+            }
         }
-    }
-
-    @Override
-    public Vote create(Vote vote, int restaurantId, int userId) {
-        Assert.notNull(vote, "vote must not be null");
-        return save(vote, userId, restaurantId);
     }
 
     @Transactional

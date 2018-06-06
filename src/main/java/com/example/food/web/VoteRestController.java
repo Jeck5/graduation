@@ -6,6 +6,7 @@ import com.example.food.model.Vote;
 import com.example.food.service.RestaurantService;
 import com.example.food.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,17 +24,17 @@ public class VoteRestController {
     private VoteService service;
 
     @GetMapping("/user")
-    public List<Vote> getBetweenForUser(@RequestParam(value = "user_id", required = true) int userId,
-                                        @RequestParam(value = "startDate", required = false) LocalDate startDate,
-                                        @RequestParam(value = "endDate", required = false) LocalDate endDate) {
+    public List<Vote> getBetweenForUser(@RequestParam(value = "user_id") int userId,
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "startDate") LocalDate startDate,
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "endDate") LocalDate endDate) {
         return service.getBetweenForUser(userId, startDate, endDate);
 
     }
 
     @GetMapping("/restaurant")
-    public List<Vote> getBetweenForRestaurant(@RequestParam(value = "restaurant_id", required = true) int restaurantId,
-                                              @RequestParam(value = "startDate", required = false) LocalDate startDate,
-                                              @RequestParam(value = "endDate", required = false) LocalDate endDate) {
+    public List<Vote> getBetweenForRestaurant(@RequestParam(value = "restaurant_id") int restaurantId,
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "startDate") LocalDate startDate,
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "endDate") LocalDate endDate) {
         return service.getBetweenForRestaurant(restaurantId, startDate, endDate);
 
     }

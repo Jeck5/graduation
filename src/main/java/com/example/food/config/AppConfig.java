@@ -12,4 +12,9 @@ public class AppConfig {
     protected Module module() {
         return new Hibernate5Module();
     }
+
+//    @Bean
+//    protected Module dateTimeModule() {
+//        return new JavaTimeModule();
+//    }
 }

@@ -39,6 +39,8 @@ public class UserServiceTest {
 
     @Test
     public void getByEmail() {
+        User u = service.getByEmail("john@mail.com");
+        u.getId();
     }
 
     @Test

@@ -17,8 +17,8 @@ public class AbstractBaseEntity {
     public static final int START_SEQ = 100000;
 
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    @SequenceGenerator(name = "global_db_seq", sequenceName = "global_db_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_db_seq")
     @Getter
     @Setter
     private Integer id;
