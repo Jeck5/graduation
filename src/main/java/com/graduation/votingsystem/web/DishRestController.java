@@ -25,7 +25,7 @@ public class DishRestController {
 
     @GetMapping("/{id}")
     public Dish get(@PathVariable("restaurant_id") int restaurantId, @PathVariable("id") int id) {
-        return service.get(id, restaurantId); //TODO review param orders
+        return service.get(id, restaurantId);
     }
 
     @GetMapping()

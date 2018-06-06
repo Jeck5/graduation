@@ -24,7 +24,6 @@ public interface UserCrudRepository extends JpaRepository<User, Integer>{
     @Transactional
     User save(User user);
 
-    //@Override TODO override where is where not + optional???
     Optional<User> findById(Integer id);
 
     @Override

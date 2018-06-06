@@ -18,13 +18,15 @@ import static com.graduation.votingsystem.util.ValidationUtil.checkNotFoundWithI
 
 @Service
 public class VoteServiceImpl implements VoteService {
-    public final VoteCrudRepository repository;  //TODO return private
+    private final VoteCrudRepository repository;
 
     private final RestaurantCrudRepository restaurantRepository;
 
     private final UserCrudRepository userRepository;
 
-    @Autowired //TODO rewatch
+    private static final LocalTime REVOTE_BORDER = LocalTime.of(11, 0);
+
+    @Autowired
     public VoteServiceImpl(VoteCrudRepository repository, RestaurantCrudRepository restaurantRepository, UserCrudRepository userRepository) {
         this.repository = repository;
         this.restaurantRepository = restaurantRepository;
@@ -63,7 +65,7 @@ public class VoteServiceImpl implements VoteService {
             return save(new Vote(), restaurantId, userId);
         } else {
             Vote currentVote = votesExisting.get(0);
-            if (currentVote.getTime().isBefore(LocalTime.of(22, 0))) {  //TODO magic constant
+            if (currentVote.getTime().isBefore(REVOTE_BORDER)) {
                 return ValidationUtil.checkNotFoundWithId(save(currentVote, restaurantId, userId), currentVote.getId());
             } else {
                 return currentVote;
@@ -73,7 +75,7 @@ public class VoteServiceImpl implements VoteService {
 
     @Transactional
     protected Vote save(Vote vote, int restaurantId, int userId) {
-        if (!vote.isNew() && get(vote.getId(), restaurantId, userId) == null) {//TODO Check different situations
+        if (!vote.isNew() && get(vote.getId(), restaurantId, userId) == null) {
             return null;
         }
         vote.setRestaurant(restaurantRepository.getOne(restaurantId));

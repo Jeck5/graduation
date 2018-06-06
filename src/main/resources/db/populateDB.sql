@@ -4,8 +4,6 @@ DELETE FROM DISHES;
 DELETE FROM RESTAURANTS;
 DELETE FROM USERS;
 
-ALTER SEQUENCE GLOBAL_DB_SEQ RESTART WITH 100000;
-
 INSERT INTO users (id, name, email, password) VALUES
   ('1000', 'john', 'john@mail.com', 'john'),
   ('1001', 'Mark', 'mark@mail.com', 'mark'),
@@ -50,19 +48,3 @@ INSERT INTO votes (id, user_id, restaurant_id, date, time) VALUES
   ('1028', '1002', '1004', '2018-05-09', '09:00:00'),
   ('1029', '1002', '1005', '2018-05-09', '10:30:00');
 
--- DELETE FROM user_roles;
--- DELETE FROM users;
--- ALTER SEQUENCE global_seq RESTART WITH 100000;
---
--- -- admin
--- INSERT INTO users (name, email, password)
--- VALUES ('User', 'user@yandex.ru', 'abcd');
---
--- -- password
--- INSERT INTO users (name, email, password)
--- VALUES ('Admin', 'admin@gmail.com', 'dcba');
---
--- INSERT INTO user_roles (role, user_id) VALUES
---   ('REGULAR_USER', 100000),
---   ('ADMIN', 100001);
---

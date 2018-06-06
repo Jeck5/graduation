@@ -9,7 +9,7 @@ import java.util.List;
 public interface VoteService {
     Vote get(int id, int restaurantId, int userId) throws NotFoundException;
 
-    void delete(int id) throws NotFoundException;//TODO othet parms??
+    void delete(int id) throws NotFoundException;
 
     List<Vote> getBetweenForRestaurant(int restaurantId, LocalDate startDate, LocalDate endDate);
 

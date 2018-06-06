@@ -23,12 +23,12 @@ public class UserRestController {
     @Autowired
     private UserService service;
 
-    @GetMapping() //TODO too many, mb limits?
+    @GetMapping()
     public List<User> getAll(){
         return service.getAll();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) //TODO on profile, to register
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@RequestBody @Valid User user) {
         User created = service.create(user);
 
@@ -55,5 +55,4 @@ public class UserRestController {
     public User getByMail(@RequestParam("email") String email) {
         return service.getByEmail(email);
     }
-    //TODO produces sometimes yes smtms no + @valid repeat
 }
