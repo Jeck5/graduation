@@ -5,6 +5,7 @@ import com.graduation.votingsystem.repository.DishCrudRepository;
 import com.graduation.votingsystem.repository.RestaurantCrudRepository;
 import com.graduation.votingsystem.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -38,6 +39,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    @CacheEvict(value = "menu", allEntries = true)
     public void delete(int id, int restaurantId) throws NotFoundException {
         checkNotFoundWithId(repository.delete(id, restaurantId), id);
     }
@@ -48,16 +50,13 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<Dish> getForFixedDate(int restaurantId, LocalDate date) {
-        return repository.getForFixedDate(restaurantId,date);
-    }
-
-    @Override
+    @CacheEvict(value = "menu", allEntries = true)
     public Dish update(Dish dish, int restaurantId) throws NotFoundException {
         return checkNotFoundWithId(save(dish, restaurantId), dish.getId());
     }
 
     @Override
+    @CacheEvict(value = "menu", allEntries = true)
     public Dish create(Dish dish, int restaurantId) {
         Assert.notNull(dish, "dish must not be null");
         return save(dish, restaurantId);

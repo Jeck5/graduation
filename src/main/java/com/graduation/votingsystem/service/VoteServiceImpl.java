@@ -7,6 +7,8 @@ import com.graduation.votingsystem.repository.VoteCrudRepository;
 import com.graduation.votingsystem.util.exception.NotFoundException;
 import com.graduation.votingsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,11 +46,13 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    @CacheEvict(value = "votes", allEntries = true)
     public void delete(int id) throws NotFoundException {
         repository.delete(id);
     }
 
     @Override
+    @Cacheable("votes")
     public List<Vote> getBetweenForRestaurant(int restaurantId, LocalDate startDate, LocalDate endDate) {
         return repository.getBetweenForRestaurant(restaurantId, startDate, endDate);
     }
@@ -59,6 +63,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    @CacheEvict(value = "votes", allEntries = true)
     public Vote createOrUpdate(int restaurantId, int userId) throws NotFoundException {
         List<Vote> votesExisting = getBetweenForUser(userId, LocalDate.now(), LocalDate.now());
         if (votesExisting.size() == 0) {

@@ -39,7 +39,6 @@ public class ProfileRestController {
     @PostMapping(path = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Vote createOrUpdate(@RequestBody int restaurantId) {
         return voteService.createOrUpdate(restaurantId, authorizedUser.id());
-
     }
 
 }

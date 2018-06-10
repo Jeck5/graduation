@@ -5,6 +5,8 @@ import com.graduation.votingsystem.repository.UserCrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.graduation.votingsystem.model.User;
@@ -30,12 +32,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(user);
     }
 
     @Override
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) throws NotFoundException {
         checkNotFoundWithId(repository.delete(id), id);
 
@@ -53,18 +57,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
     }
 
     @Override
+    @Cacheable("users")
     public List<User> getAll() {
         return repository.findAll(SORT_NAME_EMAIL);
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "users", allEntries = true)
     public void enable(int id, boolean enable) {
         User user = get(id);
         user.setEnabled(enable);

@@ -13,8 +13,6 @@ public interface DishService {
 
     List<Dish> getAll(int restaurantId);
 
-    List<Dish> getForFixedDate(int  restaurantId, LocalDate date);
-
     Dish update(Dish dish, int restaurantId) throws NotFoundException;
 
     Dish create(Dish dish, int restaurantId);

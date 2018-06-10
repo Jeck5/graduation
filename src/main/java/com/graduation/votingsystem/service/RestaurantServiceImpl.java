@@ -6,6 +6,8 @@ import com.graduation.votingsystem.repository.RestaurantCrudRepository;
 import com.graduation.votingsystem.util.exception.NotFoundException;
 import com.graduation.votingsystem.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -21,21 +23,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     private static final Sort SORT_NAME = new Sort(Sort.Direction.ASC, "name");
 
     private final RestaurantCrudRepository repository;
-    private final DishCrudRepository dishRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantCrudRepository repository, DishCrudRepository dishRepository) {
+    public RestaurantServiceImpl(RestaurantCrudRepository repository) {
         this.repository = repository;
-        this.dishRepository = dishRepository;
     }
 
     @Override
+    @CacheEvict(value = {"restaurants", "menu"}, allEntries = true)
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         return repository.save(restaurant);
     }
 
     @Override
+    @CacheEvict(value = {"restaurants", "menu"}, allEntries = true)
     public void delete(int id) throws NotFoundException {
         ValidationUtil.checkNotFoundWithId(repository.delete(id), id);
     }
@@ -46,17 +48,20 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @CacheEvict(value = {"restaurants", "menu"}, allEntries = true)
     public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         ValidationUtil.checkNotFoundWithId(repository.save(restaurant), restaurant.getId());
     }
 
     @Override
+    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         return repository.findAll(SORT_NAME);
     }
 
     @Override
+    @Cacheable("menu")
     public List<Restaurant> getAllwithMenuOnDate(LocalDate date) {
         return repository.findAllWithMenuOnDate(date);
     }
