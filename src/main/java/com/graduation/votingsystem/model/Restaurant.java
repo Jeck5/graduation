@@ -16,5 +16,6 @@ public class Restaurant extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy(value = "date DESC")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Dish> menuHistory;
 }

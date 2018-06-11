@@ -26,6 +26,7 @@ public class Dish extends AbstractNamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Restaurant restaurant;
 
     @Column(name = "date", nullable = false)
