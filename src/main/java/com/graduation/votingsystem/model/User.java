@@ -1,11 +1,13 @@
 package com.graduation.votingsystem.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NamedEntityGraph(name = User.GRAPH_WITH_VOTE_HISTORY_AND_ROLES, includeAllAttributes = true)
 @Entity
 @Table(name = "users")
