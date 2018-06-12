@@ -1,5 +1,5 @@
-#Voting system Test Task
-##1 Task
+# Voting system Test Task
+## Task
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) **without frontend**.
 
 The task is:
@@ -19,15 +19,15 @@ Each restaurant provides new menu each day.
 
 As a result, provide a link to github repository. It should contain the code, README.md with API documentation and couple curl commands to test it.
 
-##2 API and curl examples
-###2.1 Get restaurants available for voting on some date:
+## API and curl examples
+### Get restaurants available for voting on some date:
 curl "http://localhost:8090/votingsystem/rest/profile/menu?date=INTERESTED_DATE -u EMAIL:PASSWORD
 
 examples:
 * curl "http://localhost:8090/votingsystem/rest/profile/menu?date=2018-05-09" -u john@mail.com:john
 * curl "http://localhost:8090/votingsystem/rest/profile/menu?date=2018-05-19" -u peter@mail.com:peter
 
-###2.2 Vote for restaurant:
+### Vote for restaurant:
 curl -H "Content-Type: application/json" -X POST http://localhost:8090/votingsystem/rest/profile/vote -d "RESTAURANT_ID" -u EMAIL:PASSWORD
 examples:
 * curl -H "Content-Type: application/json" -X POST http://localhost:8090/votingsystem/rest/profile/vote -d "1005" -u john@mail.com:john
