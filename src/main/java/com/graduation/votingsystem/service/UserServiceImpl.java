@@ -1,5 +1,6 @@
 package com.graduation.votingsystem.service;
 
+import com.graduation.votingsystem.model.Role;
 import com.graduation.votingsystem.util.exception.NotFoundException;
 import com.graduation.votingsystem.repository.UserCrudRepository;
 import org.slf4j.Logger;
@@ -13,8 +14,9 @@ import com.graduation.votingsystem.model.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
+import java.util.*;
 
+import static com.graduation.votingsystem.model.Role.ROLE_USER;
 import static com.graduation.votingsystem.util.ValidationUtil.checkNotFound;
 import static com.graduation.votingsystem.util.ValidationUtil.checkNotFoundWithId;
 
@@ -28,13 +30,13 @@ public class UserServiceImpl implements UserService {
         this.repository = repository;
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-
-
     @Override
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
+        if (user.getRole() == null) {
+            user.setRole(new HashSet<Role>(Collections.singletonList(ROLE_USER)));
+        }
         return repository.save(user);
     }
 

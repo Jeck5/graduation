@@ -2,32 +2,33 @@ package com.graduation.votingsystem.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@NamedEntityGraph(name = User.GRAPH_WITH_VOTE_HISTORY_AND_ROLES, includeAllAttributes = true)
 @Entity
 @Table(name = "users")
 public class User extends AbstractNamedEntity {
 
-    public static final String GRAPH_WITH_VOTE_HISTORY_AND_ROLES = "User.withVoteHistory";
-
     @Column
+    @Email
+    @NotBlank
+    @Size(max = 100)
     private String email;
 
     @Column
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String password;
 
     @Column
     private boolean enabled = true;
 
-//    @Column
-//    private Date registered = new Date();
-
-//    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @ElementCollection(fetch = FetchType.EAGER)
