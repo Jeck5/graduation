@@ -24,6 +24,7 @@ As a result, provide a link to github repository. It should contain the code, RE
 curl "http://localhost:8090/votingsystem/rest/profile/menu?date=INTERESTED_DATE -u EMAIL:PASSWORD
 
 examples:
+* curl "http://localhost:8090/votingsystem/rest/profile/menu" -u john@mail.com:john
 * curl "http://localhost:8090/votingsystem/rest/profile/menu?date=2018-05-09" -u john@mail.com:john
 * curl "http://localhost:8090/votingsystem/rest/profile/menu?date=2018-05-19" -u peter@mail.com:peter
 

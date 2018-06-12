@@ -26,8 +26,8 @@ public interface UserCrudRepository extends JpaRepository<User, Integer>{
 
     Optional<User> findById(Integer id);
 
-    @Override
-    List<User> findAll(Sort sort);
+    @Query("SELECT DISTINCT u from User u JOIN FETCH u.role r ORDER BY u.email")
+    List<User> getAll();
 
     User getByEmail(String email);
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.graduation.votingsystem.util.Util.orElse;
+
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)
 public class ProfileRestController {
@@ -32,8 +34,8 @@ public class ProfileRestController {
     private AuthorizedUser authorizedUser;
 
     @GetMapping("/menu")
-    List<Restaurant> getMenu(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "date") LocalDate date) {
-        return restaurantService.getAllwithMenuOnDate(date);
+    List<Restaurant> getMenu(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "date",required = false) LocalDate date) {
+        return restaurantService.getAllwithMenuOnDate(orElse(date,LocalDate.now()));
     }
 
     @PostMapping(path = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)

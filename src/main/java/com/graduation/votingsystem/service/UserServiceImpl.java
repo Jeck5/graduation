@@ -23,7 +23,6 @@ import static com.graduation.votingsystem.util.ValidationUtil.checkNotFoundWithI
 @Service("userService")
 public class UserServiceImpl implements UserService {
     private final UserCrudRepository repository;
-    private static final Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");
 
     @Autowired
     public UserServiceImpl(UserCrudRepository repository) {
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable("users")
     public List<User> getAll() {
-        return repository.findAll(SORT_NAME_EMAIL);
+        return repository.getAll();
     }
 
     @Override
