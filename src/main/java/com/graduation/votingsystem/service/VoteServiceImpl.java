@@ -70,7 +70,7 @@ public class VoteServiceImpl implements VoteService {
             return save(new Vote(), restaurantId, userId);
         } else {
             Vote currentVote = votesExisting.get(0);
-            if (currentVote.getTime().isBefore(REVOTE_BORDER)) {
+            if (LocalTime.now().isBefore(REVOTE_BORDER)) {
                 return ValidationUtil.checkNotFoundWithId(save(currentVote, restaurantId, userId), currentVote.getId());
             } else {
                 return currentVote;
