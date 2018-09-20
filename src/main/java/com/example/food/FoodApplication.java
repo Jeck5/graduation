@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 @SpringBootApplication
-public class FoodApplication {
-
+public class FoodApplication { /*TODO rename*/
 	public static void main(String[] args) {
 		SpringApplication.run(FoodApplication.class, args);
 	}
