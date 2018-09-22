@@ -4,7 +4,7 @@ CREATE SEQUENCE global_db_seq
   START WITH 10000;
 CREATE TABLE bankaccounts
 (
-  id       INTEGER PRIMARY KEY DEFAULT nextval('global_db_seq'),
-  number   INTEGER UNIQUE NOT NULL,
-  balance    DECIMAL NOT NULL
+  key       INTEGER PRIMARY KEY DEFAULT nextval('global_db_seq'),
+  id        INTEGER UNIQUE NOT NULL,
+  balance   DECIMAL NOT NULL
 );
