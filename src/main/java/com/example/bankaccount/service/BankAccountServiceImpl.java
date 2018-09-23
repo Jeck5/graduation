@@ -2,6 +2,7 @@ package com.example.bankaccount.service;
 
 import com.example.bankaccount.model.BankAccount;
 import com.example.bankaccount.repository.BankAccountCrudRepository;
+import com.example.bankaccount.util.AccountAction;
 import com.example.bankaccount.util.exception.NotEnoughBalanceException;
 import com.example.bankaccount.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +34,19 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public void deposit(int id, BigDecimal sum) {
+    public void operate(int id, BigDecimal sum, AccountAction action) {
         BankAccount bankAccount = repository.findById(id).orElse(null);
         Assert.notNull(bankAccount, "bankAccount must not be null");
-        BigDecimal newBalance = bankAccount.getBalance().add(sum);
-        bankAccount.setBalance(newBalance);
-        checkNotFoundWithKey(repository.save(bankAccount), bankAccount.getKey());
-    }
-
-    @Override
-    @Transactional
-    public void withdraw(int id, BigDecimal sum) {
-        BankAccount bankAccount = repository.findById(id).orElse(null);
-        Assert.notNull(bankAccount, "bankAccount must not be null");
-        if (bankAccount.getBalance().compareTo(sum) < 0) { throw new NotEnoughBalanceException("Not enough balance");}
-        BigDecimal newBalance = bankAccount.getBalance().subtract(sum);
+        BigDecimal newBalance = BigDecimal.ZERO;
+        if (action == AccountAction.DEPOSIT){
+            newBalance = bankAccount.getBalance().add(sum);
+        }
+        if (action == AccountAction.WITHDRAW){
+            if (bankAccount.getBalance().compareTo(sum) < 0) {
+                throw new NotEnoughBalanceException("Not enough balance");
+            }
+            newBalance = bankAccount.getBalance().subtract(sum);
+        }
         bankAccount.setBalance(newBalance);
         checkNotFoundWithKey(repository.save(bankAccount), bankAccount.getKey());
     }
@@ -57,4 +56,5 @@ public class BankAccountServiceImpl implements BankAccountService {
         Assert.notNull(id, "id must not be null");
         return checkNotFound(repository.findById(id).orElse(null), "id=" + id);
     }
+
 }

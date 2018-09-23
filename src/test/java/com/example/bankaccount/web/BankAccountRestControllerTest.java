@@ -29,7 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 public class BankAccountRestControllerTest {
 
-    //@Autowired
+    private static final int ACCOUNT_ID = 11000;
+    private static final BigDecimal SUM1 = BigDecimal.valueOf(500);
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -52,6 +54,9 @@ public class BankAccountRestControllerTest {
 
     @Test
     public void deposit() {
+        BigDecimal bd = BigDecimal.ZERO.add(BigDecimal.valueOf(0.250));/*TODO delete*/
+        bd.scale();
+        bd.scale();
     }
 
     @Test
@@ -60,8 +65,8 @@ public class BankAccountRestControllerTest {
 
     @Test
     public void balance() throws Exception {
-        when(serviceMock.getById(1000)).thenReturn(new BankAccount(1000, BigDecimal.valueOf(500)));
-        mockMvc.perform(get("/bankaccount/1000/balance")).andDo(print());
+        when(serviceMock.getById(ACCOUNT_ID)).thenReturn(new BankAccount(ACCOUNT_ID, SUM1));
+        mockMvc.perform(get(String.format("/bankaccount/%d/balance",ACCOUNT_ID))).andDo(print());
     }
 
     @Test(expected = NotFoundException.class) /*TODO relize why nested servlet*/
