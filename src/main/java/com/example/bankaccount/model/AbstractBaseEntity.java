@@ -10,7 +10,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AbstractBaseEntity {
-    public static final int START_SEQ = 100000; /*TODO delete*/
 
     @Id
     @SequenceGenerator(name = "global_db_seq", sequenceName = "global_db_seq", allocationSize = 1)

@@ -33,26 +33,4 @@ public class ValidationUtil {
         }
     }
 
-    public static void assureKeyConsistent(AbstractBaseEntity entity, int key) {
-//      http://stackoverflow.com/a/32728226/548473
-        if (entity.isNew()) {
-            entity.setKey(key);
-        } else if (entity.getKey() != key) {
-            throw new IllegalArgumentException(entity + " must be with key=" + key);
-        }
-    }
-
-    //  http://stackoverflow.com/a/28565320/548473
-    public static Throwable getRootCause(Throwable t) {
-        Throwable result = t;
-        Throwable cause;
-
-        while (null != (cause = result.getCause()) && (result != cause)) {
-            result = cause;
-        }
-        return result;
-    }
-
-
-
 }

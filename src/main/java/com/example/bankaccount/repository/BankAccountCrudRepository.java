@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-@Transactional(readOnly = true) /*TODO repeat it*/
 @Repository
 public interface BankAccountCrudRepository extends JpaRepository<BankAccount,Integer> {
 
@@ -16,9 +15,6 @@ public interface BankAccountCrudRepository extends JpaRepository<BankAccount,Int
     Optional<BankAccount> findById(@Param("id")Integer id);
 
     @Override
-    @Transactional
-    @SuppressWarnings("unchecked") /*TODO one more time*/
+    @SuppressWarnings("unchecked")
     BankAccount save(BankAccount bankAccount);
-
-
 }

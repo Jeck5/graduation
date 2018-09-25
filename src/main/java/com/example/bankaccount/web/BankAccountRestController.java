@@ -6,6 +6,7 @@ import com.example.bankaccount.util.AccountAction;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,30 +34,24 @@ public class BankAccountRestController {
     private BankAccountService service;
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<BankAccount> createWithLocation(@PathVariable("id")
-                                                          @Range(min = MIN_VALUE, max = MAX_VALUE) int id) {
+    public BankAccount create(@PathVariable("id")
+                              @Range(min = MIN_VALUE, max = MAX_VALUE) int id) {
         BankAccount bankAccount = new BankAccount(id, BigDecimal.ZERO);
         checkNew(bankAccount);
-        BankAccount created = service.create(bankAccount);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created); //TODO in aa proper way
+        return service.create(bankAccount);
     }
 
-    @PutMapping(value = "/{id}/deposit")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/{id}/deposit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deposit(@PathVariable("id")
-                        @Range(min = MIN_VALUE, max = MAX_VALUE) int id, @RequestParam("sum")
+                        @Range(min = MIN_VALUE, max = MAX_VALUE) int id, @RequestBody
                         @DecimalMin("0.00")
                         @Digits(integer = 100, fraction = 2) BigDecimal sum) {
         service.operate(id, sum, AccountAction.DEPOSIT);
     }
 
-    @PutMapping(value = "/{id}/withdraw")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/{id}/withdraw", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void withdraw(@PathVariable("id")
-                         @Range(min = MIN_VALUE, max = MAX_VALUE) int id, @RequestParam("sum")
+                         @Range(min = MIN_VALUE, max = MAX_VALUE) int id, @RequestBody
                          @DecimalMin("0.00")
                          @Digits(integer = 100, fraction = 2) BigDecimal sum) {
         service.operate(id, sum, AccountAction.WITHDRAW);
@@ -67,6 +62,4 @@ public class BankAccountRestController {
                               @Range(min = MIN_VALUE, max = MAX_VALUE) int id) {
         return service.getById(id).getBalance();
     }
-
-
 }

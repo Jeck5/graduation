@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import static com.example.bankaccount.util.ValidationUtil.checkNotFound;
 import static com.example.bankaccount.util.ValidationUtil.checkNotFoundWithKey;
 
-@Service/*TODO transactions*/
+@Service
 public class BankAccountServiceImpl implements BankAccountService {
 
     private final BankAccountCrudRepository repository;
