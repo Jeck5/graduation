@@ -71,10 +71,14 @@ HTTP/1.1 400
 {"timestamp":1537915823786,"status":400,"error":"Bad Request","exception":"org.springframework.web.method.annotation.MethodArgumentTypeMismatchException","message":"Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: \"qwert\"","path":"/bankaccount/qwert/balance"}
 
 ## 2 Ипользуемая БД
-postgresql 9.6
-url=jdbc:postgresql://localhost:5432/bankaccounts
-username=user1
-password=pass1
+postgresql 9.6  
+url=jdbc:postgresql://localhost:5432/bankaccounts   
+username=user1    
+password=pass1  
 
-   
- 
+##3 Сборка и настройка
+1) В Maven выполнить фазу package.  
+2) Полученный в результате дейтсвия 1 jar файл запустить из командной строки.
+   Для этого необходимо перейти в папку target, содержащую файл **_bankaccount-0.0.1-SNAPSHOT.jar**_ 
+   и ввести java -jar bankaccount-0.0.1-SNAPSHOT.jar   
+   jar включает в себя embedded tomcat 
