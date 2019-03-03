@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface BankAccountCrudRepository extends JpaRepository<BankAccount,Integer> {
 
-    @Query("SELECT b from BankAccount b  WHERE b.id=:id")
-    Optional<BankAccount> findById(@Param("id")Integer id);
+    @Query("SELECT b from BankAccount b  WHERE b.accountNumber=:accountNumber")
+    Optional<BankAccount> findByAccountNumber(@Param("accountNumber")Integer accountNumber);
 
     @Override
     @SuppressWarnings("unchecked")

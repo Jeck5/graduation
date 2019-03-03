@@ -18,8 +18,8 @@ import java.math.BigDecimal;
 public class BankAccount extends AbstractBaseEntity {
     @Getter
     @Setter
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "accountNumber")
+    private Integer accountNumber;
 
     @Getter
     @Setter

@@ -8,12 +8,12 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static void checkNotFoundWithKey(boolean found, int key) {
-        checkNotFound(found, "key=" + key);
+    public static void checkNotFoundWithId(boolean found, int id) {
+        checkNotFound(found, "id=" + id);
     }
 
-    public static <T> T checkNotFoundWithKey(T object, int key) {
-        return checkNotFound(object, "key=" + key);
+    public static <T> T checkNotFoundWithId(T object, int id) {
+        return checkNotFound(object, "id=" + id);
     }
 
     public static <T> T checkNotFound(T object, String msg) {
@@ -29,7 +29,7 @@ public class ValidationUtil {
 
     public static void checkNew(AbstractBaseEntity entity) {
         if (!entity.isNew()) {
-            throw new IllegalArgumentException(entity + " must be new (key=null)");
+            throw new IllegalArgumentException(entity + " must be new (id=null)");
         }
     }
 

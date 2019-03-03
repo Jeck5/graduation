@@ -16,11 +16,11 @@ public class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_db_seq")
     @Getter
     @Setter
-    private Integer key;
+    private Integer id;
 
     @JsonIgnore
     public boolean isNew(){
-        return this.key == null;
+        return this.id == null;
     }
 
     @Override
@@ -28,12 +28,12 @@ public class AbstractBaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractBaseEntity that = (AbstractBaseEntity) o;
-        return key != null ? key.equals(that.key) : that.key == null;
+        return id != null ? id.equals(that.id) : that.id == null;
 
     }
 
     @Override
     public int hashCode() {
-        return key != null ? key.hashCode() : 0;
+        return id != null ? id.hashCode() : 0;
     }
 }

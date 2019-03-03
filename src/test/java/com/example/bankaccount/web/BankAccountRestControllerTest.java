@@ -20,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,10 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class BankAccountRestControllerTest {
 
-    private static final int ACCOUNT_ID = 11000;
-    private static final int ACCOUNT_KEY = 100001;
-    private static final int ACCOUNT_ID_BIG = 111000;
-    private static final int ACCOUNT_ID_SMALL = 1100;
+    private static final int ACCOUNT_NUMBER = 11000;
+    private static final int ACCOUNT_ID = 100001;
+    private static final int ACCOUNT_NUMBER_BIG = 111000;
+    private static final int ACCOUNT_NUMBER_SMALL = 1100;
     private static final BigDecimal SUM1 = BigDecimal.valueOf(500);
     private static final BigDecimal SUM2 = BigDecimal.valueOf(50.5);
     private static final BigDecimal SUM_NEGATIVE = BigDecimal.valueOf(-50.5);
@@ -67,11 +66,11 @@ public class BankAccountRestControllerTest {
 
     @Test
     public void create() throws Exception {
-        BankAccount bankAccount1 = new BankAccount(ACCOUNT_ID, SUM1);
-        BankAccount bankAccount2 = new BankAccount(ACCOUNT_ID, SUM1);
-        bankAccount2.setKey(ACCOUNT_KEY);
+        BankAccount bankAccount1 = new BankAccount(ACCOUNT_NUMBER, SUM1);
+        BankAccount bankAccount2 = new BankAccount(ACCOUNT_NUMBER, SUM1);
+        bankAccount2.setId(ACCOUNT_ID);
         when(serviceMock.create(bankAccount1)).thenReturn(bankAccount2);
-        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_ID)))
+        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_NUMBER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -79,38 +78,38 @@ public class BankAccountRestControllerTest {
     }
 
     @Test(expected = Exception.class)
-    public void createWithSmallId() throws Exception {
-        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_ID_SMALL)))
+    public void createWithSmallNumber() throws Exception {
+        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_NUMBER_SMALL)))
                 .andDo(print());
     }
 
     @Test(expected = Exception.class)
-    public void createWithBigId() throws Exception {
-        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_ID_BIG)))
+    public void createWithBigNumber() throws Exception {
+        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_NUMBER_BIG)))
                 .andDo(print());
     }
 
     @Test(expected = Exception.class)
     public void createDuplicated() throws Exception {
-        BankAccount bankAccount1 = new BankAccount(ACCOUNT_ID, SUM1);
+        BankAccount bankAccount1 = new BankAccount(ACCOUNT_NUMBER, SUM1);
         when(serviceMock.create(bankAccount1)).thenThrow(new Exception());
-        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_ID_BIG)))
+        mockMvc.perform(post(String.format("/bankaccount/%d", ACCOUNT_NUMBER_BIG)))
                 .andDo(print());
     }
 
     @Test
     public void deposit() throws Exception {
-        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_ID))
+        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_NUMBER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(SUM1.toString()))
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(serviceMock, times(1)).operate(ACCOUNT_ID, SUM1, AccountAction.DEPOSIT);
+        verify(serviceMock, times(1)).operate(ACCOUNT_NUMBER, SUM1, AccountAction.DEPOSIT);
     }
 
     @Test(expected = Exception.class)
     public void depositNegative() throws Exception {
-        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_ID))
+        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_NUMBER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(SUM_NEGATIVE.toString()))
                 .andDo(print());
@@ -118,7 +117,7 @@ public class BankAccountRestControllerTest {
 
     @Test(expected = Exception.class)
     public void depositThreeFractionDigits() throws Exception {
-        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_ID))
+        mockMvc.perform(put(String.format("/bankaccount/%d/deposit", ACCOUNT_NUMBER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(SUM_THREE_FRACTION_DIGITS.toString()))
                 .andDo(print());
@@ -126,18 +125,18 @@ public class BankAccountRestControllerTest {
 
     @Test
     public void withdraw() throws Exception {
-        mockMvc.perform(put(String.format("/bankaccount/%d/withdraw", ACCOUNT_ID))
+        mockMvc.perform(put(String.format("/bankaccount/%d/withdraw", ACCOUNT_NUMBER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(SUM1.toString()))
                 .andDo(print())
                 .andExpect(status().isOk());
-        verify(serviceMock, times(1)).operate(ACCOUNT_ID, SUM1, AccountAction.WITHDRAW);
+        verify(serviceMock, times(1)).operate(ACCOUNT_NUMBER, SUM1, AccountAction.WITHDRAW);
     }
 
     @Test(expected = Exception.class)
     public void withdrawNotEnough() throws Exception {
-        doThrow(new NotEnoughBalanceException("Not enough balance")).when(serviceMock).operate(ACCOUNT_ID,SUM1,AccountAction.WITHDRAW);
-        mockMvc.perform(put(String.format("/bankaccount/%d/withdraw", ACCOUNT_ID))
+        doThrow(new NotEnoughBalanceException("Not enough balance")).when(serviceMock).operate(ACCOUNT_NUMBER,SUM1,AccountAction.WITHDRAW);
+        mockMvc.perform(put(String.format("/bankaccount/%d/withdraw", ACCOUNT_NUMBER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(SUM1.toString()))
                 .andDo(print());
@@ -146,8 +145,8 @@ public class BankAccountRestControllerTest {
 
     @Test
     public void balance() throws Exception {
-        when(serviceMock.getById(ACCOUNT_ID)).thenReturn(new BankAccount(ACCOUNT_ID, SUM1));
-        mockMvc.perform(get(String.format("/bankaccount/%d/balance", ACCOUNT_ID)))
+        when(serviceMock.getByAccountNumber(ACCOUNT_NUMBER)).thenReturn(new BankAccount(ACCOUNT_NUMBER, SUM1));
+        mockMvc.perform(get(String.format("/bankaccount/%d/balance", ACCOUNT_NUMBER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -156,7 +155,7 @@ public class BankAccountRestControllerTest {
 
     @Test(expected = Exception.class)
     public void balanceNotFound() throws Exception {
-        when(serviceMock.getById(ACCOUNT_ID)).thenThrow(new NotFoundException("Not found"));
-        mockMvc.perform(get(String.format("/bankaccount/%d/balance", ACCOUNT_ID))).andDo(print());
+        when(serviceMock.getByAccountNumber(ACCOUNT_NUMBER)).thenThrow(new NotFoundException("Not found"));
+        mockMvc.perform(get(String.format("/bankaccount/%d/balance", ACCOUNT_NUMBER))).andDo(print());
     }
 }

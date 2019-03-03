@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 import static com.example.bankaccount.util.ValidationUtil.checkNotFound;
-import static com.example.bankaccount.util.ValidationUtil.checkNotFoundWithKey;
+import static com.example.bankaccount.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
@@ -34,8 +34,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     @Transactional
-    public void operate(int id, BigDecimal sum, AccountAction action) {
-        BankAccount bankAccount = repository.findById(id).orElse(null);
+    public void operate(int accountNumber, BigDecimal sum, AccountAction action) {
+        BankAccount bankAccount = repository.findByAccountNumber(accountNumber).orElse(null);
         Assert.notNull(bankAccount, "bankAccount must not be null");
         BigDecimal newBalance = BigDecimal.ZERO;
         if (action == AccountAction.DEPOSIT){
@@ -48,13 +48,13 @@ public class BankAccountServiceImpl implements BankAccountService {
             newBalance = bankAccount.getBalance().subtract(sum);
         }
         bankAccount.setBalance(newBalance);
-        checkNotFoundWithKey(repository.save(bankAccount), bankAccount.getKey());
+        checkNotFoundWithId(repository.save(bankAccount), bankAccount.getId());
     }
 
     @Override
-    public BankAccount getById(Integer id) throws NotFoundException {
-        Assert.notNull(id, "id must not be null");
-        return checkNotFound(repository.findById(id).orElse(null), "id=" + id);
+    public BankAccount getByAccountNumber(Integer accountNumber) throws NotFoundException {
+        Assert.notNull(accountNumber, "accountNumber must not be null");
+        return checkNotFound(repository.findByAccountNumber(accountNumber).orElse(null), "accountNumber=" + accountNumber);
     }
 
 }

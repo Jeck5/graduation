@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 public interface BankAccountService {
     BankAccount create(BankAccount bankAccount);
 
-    void operate(int id, BigDecimal sum, AccountAction action);
+    void operate(int accountNumber, BigDecimal sum, AccountAction action);
 
-    BankAccount getById(Integer id) throws NotFoundException;
+    BankAccount getByAccountNumber(Integer accountNumber) throws NotFoundException;
 
 }
